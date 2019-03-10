@@ -1,55 +1,96 @@
 ﻿var table = document.getElementById("table");
-var str = table.rows[0].cells[0];
-var C = table.rows[0].cells[1];
-var del = table.rows[0].cells[2];
-var division = table.rows[0].cells[3];// 나중에 바꾸기
-var seven = table.rows[1].cells[0];
-var eight = table.rows[1].cells[1];
-var nine = table.rows[1].cells[2];
-var multiple = table.rows[1].cells[3];
-var four = table.rows[2].cells[0];
-var five = table.rows[2].cells[1];
-var six = table.rows[2].cells[2];
-var minus = table.rows[2].cells[3]; // 바꾸기
-var one = table.rows[3].cells[0];
-var two = table.rows[3].cells[1];
-var three = table.rows[3].cells[2];
-var plus = table.rows[3].cells[3];
-var change = table.rows[4].cells[0];
-var zero = table.rows[4].cells[1];
-var dot = table.rows[4].cells[2];
-var result = table.rows[4].cells[3];
-
 var resultWindow = document.getElementById("resultWindow"); //결과창
+var form = document.getElementById("form");
+var input = document.getElementById("input");
+var opCount = 0;
 
-
-//아이디어 table에 에드이벤트를 넣고 조건을 판단해서 text를 넣는방식.
-// html의 td에서 값을 가져와야함. (인터넷에서 본것같으니 검색 ㄱ)
-// 값이 아닌 
-
+// 결과창에 addText를 표시하는 함수
 function addWord(addText) {
-    var curText = resultWindow.textContent;
-    resultWindow.textContent = curText + addText;
+    resultWindow.textContent = resultWindow.textContent + addText;
 
 }
 
+ // 현재 결과창에 있는 표시대로 계산하는 함수
+function calculate() {
+    var curArr = resultWindow.textContent.split('');
+    var preArr = [];
+    var value = 0;
 
-// 결과창에 글자 입력
+    while (1) {
+        value = curArr.shift();
+        if (!(0 <= value && value <= 9 || value === '.')) {  // 연산자가 나오면 계산하기.
+            if (value === '+')
+                resultWindow.textContent = Number(preArr.join('')) + Number(curArr.join(''));
+            else if (value === 'ㅡ')
+                resultWindow.textContent = Number(preArr.join('')) - Number(curArr.join(''));
+            else if (value === 'x')
+                resultWindow.textContent = Number(preArr.join('')) * Number(curArr.join(''));
+            else if (value === '/')
+                resultWindow.textContent = Number(preArr.join('')) / Number(curArr.join(''));
+            break;
+        }
+            
+
+        preArr.push(value);
+    }
+
+
+
+}
+
+// 입력창에 숫자만 입력하게 만들어주는 함수
+function onlyNumber(event) {
+    event = event || window.event;
+    var keyID = event.keyCode;
+    if ((keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39)
+        return;
+    else
+        return false;
+}
+//한글 입력시 지워주는 함수
+function removeChar(event) {
+    event = event || window.event;
+    var keyID = event.keyCode;
+    if (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39)
+        return;
+    else
+        event.target.value = event.target.value.replace(/[^0-9]/g, "");
+}
+
+function ifEnter(event) {
+    event = event || window.event;
+    var keyID = event.keyCode;
+    if (keyID == 13) {
+        addWord(event.target.value);
+        event.target.value = '';
+        
+    }
+        
+}
+
+// 칸을 클릭하면 결과창에 표시하는 함수
 table.addEventListener('click', function (event) {
-    tdContent = event.target.textContent;
+    var tdContent = event.target.textContent;
     if (0 <= tdContent && tdContent <= 9)
         addWord(tdContent);
     else {
         if (resultWindow.textContent !== '') {
             if (tdContent === 'sqr')
-                resultWindow.textContent = `sqr(${resultWindow.textContent})`;
-            else if (tdContent === 'C')
+                resultWindow.textContent = resultWindow.textContent * resultWindow.textContent;
+            else if (tdContent === 'C') {
                 resultWindow.textContent = '';
-            else if (tdContent === '←')
-                resultWindow.textContent = 'hi';
+                input.focus();
+            }
+            else if (tdContent === '←') {
+                var arrStr = input.value.split('');
+                arrStr.pop();
+                input.value = arrStr.join('');
+                input.focus();
+                
+            }
             else if (tdContent === '÷')
                 addWord('/');
-            else if (tdContent === 'X')
+            else if (tdContent === 'x')
                 addWord(tdContent);
             else if (tdContent === 'ㅡ')
                 addWord(tdContent);
@@ -59,19 +100,20 @@ table.addEventListener('click', function (event) {
                 if (Number(resultWindow.textContent) > 0)
                     resultWindow.textContent = `-${resultWindow.textContent}`;
                 else if (Number(resultWindow.textContent) < 0) {
-
                     resultWindow.textContent = `${-Number(resultWindow.textContent)}`;
                 }
 
             }
             else if (tdContent === '.') {
-
+                if (!(resultWindow.textContent.indexOf(".") > -1))   // .의 유무 확인
+                    addWord(tdContent);
             }
-                addWord(tdContent);
-            
-            else if (tdContent === '=')
-                ㅁㄴㅇ
+            else if (tdContent === '=') {
+                calculate();
+            }
+                
         }
     }
 
 });
+

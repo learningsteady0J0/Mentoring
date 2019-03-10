@@ -21,10 +21,23 @@
             font-weight: bold;
             font-size: 35px;
         }
+
+        input {
+            border: 1px solid black;
+            width: 223px;
+            height: 50px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 35px;
+        }
     </style>
 </head>
 <body>
     <div id="resultWindow"></div>
+    <form id="form" onsubmit="return false"> <!-- submit 막기 -->
+        <input id="input" type="text" onkeydown="return onlyNumber(), ifEnter()"  onkeyup='removeChar(event)' 
+               onfocusout="removeChar(event)"  stlye='ime-mode:disabled;' />
+    </form >
     <table id="table">
         <tr>
             <td id="sqr">sqr</td>
@@ -36,7 +49,7 @@
             <td id="7">7</td>
             <td id="8">8</td>
             <td id="9">9</td>
-            <td id="10">X</td>
+            <td id="10">x</td>
         </tr>
         <tr>
             <td id="4">4</td>
