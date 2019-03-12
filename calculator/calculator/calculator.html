@@ -4,10 +4,14 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
-        td{
+        table {
+            margin: 50px auto;
+        }
+
+        td {
             border: 1px solid black;
-            width : 50px;
-            height : 50px;
+            width: 50px;
+            height: 50px;
             text-align: center;
             font-weight: bold;
             font-size: 35px;
@@ -15,16 +19,23 @@
 
         div {
             border: 1px solid black;
-            width: 223px;
+            margin: auto;
+            width: 400px;
             height: 50px;
             text-align: center;
             font-weight: bold;
             font-size: 35px;
         }
 
+        form {
+            width: 400px;
+            height: 50px;
+            margin: auto;
+        }
+
         input {
             border: 1px solid black;
-            width: 223px;
+            width: 400px;
             height: 50px;
             text-align: center;
             font-weight: bold;
@@ -35,39 +46,39 @@
 <body>
     <div id="resultWindow"></div>
     <form id="form" onsubmit="return false"> <!-- submit 막기 -->
-        <input id="input" type="text" onkeydown="return onlyNumber(), ifEnter()"  onkeyup='removeChar(event)' 
+        <input id="input" type="text" onkeydown="return keyInput(), removeChar(event)"  onkeyup='removeChar(event)' 
                onfocusout="removeChar(event)"  stlye='ime-mode:disabled;' />
     </form >
     <table id="table">
         <tr>
-            <td id="sqr">sqr</td>
-            <td id="C">C</td>
-            <td id="←">←</td>
-            <td id="÷">÷</td>
+            <td>sqr</td>
+            <td>C</td>
+            <td>←</td>
+            <td>÷</td>
         </tr>
         <tr>
-            <td id="7">7</td>
-            <td id="8">8</td>
-            <td id="9">9</td>
-            <td id="10">x</td>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>x</td>
         </tr>
         <tr>
-            <td id="4">4</td>
-            <td id="5">5</td>
-            <td id="6">6</td>
-            <td id="-">ㅡ</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>ㅡ</td>
         </tr>
         <tr>
-            <td id="1">1</td>
-            <td id="2">2</td>
-            <td id="3">3</td>
-            <td id="4">+</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>+</td>
         </tr>
         <tr>
-            <td id="±">±</td>
-            <td id="0">0</td>
-            <td id=".">.</td>
-            <td id="=">=</td>
+            <td>±</td>
+            <td>0</td>
+            <td>.</td>
+            <td>=</td>
         </tr>
     </table>
     <script src="calculator.js"></script>
