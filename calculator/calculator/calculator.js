@@ -51,132 +51,6 @@ function calculate(value) {
     return result;
 }
 
-// 연산자가 입력되거나 선택될 때 수행되는 함수
-function inputOperator(op) {
-    var result;
-    if (op === '=') {
-        if (curOp !== 0 && input.value !== '') { //연산자가 존재 할때만 엔터 실행
-            result = calculate(input.value);
-            input.value = result;
-            preNumber = result;
-            curOp = 0;
-            resultWindow.textContent = '';
-            input.value.focus();
-        }
-    }
-    else {
-        if (op === '+') {
-            if (input.value !== '') { // 인풋에 값이 존재하면
-                if (preNumber !== 0) {
-                    result = calculate(input.value);
-                    curOp = '+';
-                    if (result !== false) {
-                        preNumber = result;
-                        resultWindow.textContent = result;
-                        addWordToWindow('+');
-                    }
-                    else {
-                        addWordToWindow(input.value + '+');
-                    }
-                }
-                else { // preNumber가 없는경우에는 curOp도 0임
-                    curOp = '+';
-                    preNumber = input.value;
-                    addWordToWindow(input.value + '+');
-                }
-            }
-            else {
-                resultWindow.textContent = resultWindow.textContent.slice(0, -1);
-                curOp = '+';
-                addWordToWindow('+');
-            }
-        }
-
-        else if (op === '-') {
-            if (input.value !== '') { // 인풋에 값이 존재하면
-                if (preNumber !== 0) {
-                    result = calculate(input.value);
-                    curOp = '-';
-                    if (result !== false) {
-                        preNumber = result;
-                        resultWindow.textContent = result;
-                        addWordToWindow('-');
-                    }
-                    else {
-                        addWordToWindow(input.value + '-');
-                    }
-                }
-                else { // preNumber가 없는경우에는 curOp도 0임
-                    curOp = '-';
-                    preNumber = input.value;
-                    addWordToWindow(input.value + '-');
-                }
-            }
-            else {
-                resultWindow.textContent = resultWindow.textContent.slice(0, -1);
-                curOp = '-';
-                addWordToWindow('-');
-            }
-        }
-        else if (op === '*') {
-            if (input.value !== '') { // 인풋에 값이 존재하면
-                if (preNumber !== 0) {
-                    result = calculate(input.value);
-                    curOp = '*';
-                    if (result !== false) {
-                        preNumber = result;
-                        resultWindow.textContent = result;
-                        addWordToWindow('*');
-                    }
-                    else {
-                        addWordToWindow(input.value + '*');
-                    }
-                }
-                else { // preNumber가 없는경우에는 curOp도 0임
-                    curOp = '*';
-                    preNumber = input.value;
-                    addWordToWindow(input.value + '*');
-                }
-            }
-            else {
-                resultWindow.textContent = resultWindow.textContent.slice(0, -1);
-                curOp = '*';
-                addWordToWindow('*');
-            }
-        }
-        else if (op === '/') {
-            if (input.value !== '') { // 인풋에 값이 존재하면
-                if (preNumber !== 0) {
-                    result = calculate(input.value);
-                    curOp = '/';
-                    if (result !== false) {
-                        preNumber = result;
-                        resultWindow.textContent = result;
-                        addWordToWindow('/');
-                    }
-                    else {
-                        addWordToWindow(input.value + '/');
-                    }
-                }
-                else { // preNumber가 없는경우에는 curOp도 0임
-                    curOp = '/';
-                    preNumber = input.value;
-                    addWordToWindow(input.value + '/');
-                }
-            }
-            else {
-                resultWindow.textContent = resultWindow.textContent.slice(0, -1);
-                curOp = '/';
-                addWordToWindow('/');
-            }
-        }
-
-        input.value = '';
-        input.focus;
-    }
-}
-
-
 // 입력된 키에 따라 작동하는 함수
 function keyInput(event) {
     event = event || window.event;
@@ -199,7 +73,7 @@ function keyInput(event) {
     else if (keyID === 111) { // /입력
         inputOperator('/');
     }
-    else 
+    else
         return false;
 }
 
@@ -207,7 +81,7 @@ function keyInput(event) {
 function removeChar(event) {
     event = event || window.event;
     var keyID = event.keyCode;
-    if (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39 )
+    if (keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39)
         return;
     else {
         var count = (input.value.match(/[.]/g) || []).length;
@@ -224,6 +98,84 @@ function removeChar(event) {
     }
 }
 
+
+// 연산자가 존재 하면 true
+function hasOperator() {
+    if (curOp !== 0)
+        return true;
+    else
+        return false;
+}
+// 계산기 입력창에 값이 있으면 true
+function hasValueInInput() {
+    if (input.value !== '')
+        return true;
+    else
+        return false;
+}
+// 연산전 입력숫자가 존재하면 true
+function hasPreNumber() {
+    if (preNumber !== 0)
+        return true;
+    else
+        return false;
+}
+
+    
+// 연산자가 입력되거나 선택될 때 수행되는 함수
+function inputOperator(op) {
+    function returnOperator() {
+        if (op === '+')
+            return '+';
+        else if (op === '-')
+            return '-';
+        else if (op === '*')
+            return '*';
+        else if (op === '/')
+            return '/';
+    }
+
+    var result;
+    if (op === '=') {
+        if (hasOperator() && hasValueInInput()) {
+            result = calculate(input.value);
+            input.value = result;
+            preNumber = result;
+            curOp = 0;
+            resultWindow.textContent = '';
+            input.value.focus();
+        }
+    }
+    else {
+            if (hasValueInInput()) {
+                if (hasPreNumber()) {
+                    result = calculate(input.value);
+                    curOp = returnOperator();
+                    if (result !== false) {
+                        preNumber = result;
+                        resultWindow.textContent = result;
+                        addWordToWindow(returnOperator());
+                    }
+                    else {
+                        addWordToWindow(input.value + returnOperator());
+                    }
+                }
+                else { // preNumber가 없는경우에는 curOp도 0임
+                    curOp = returnOperator();
+                    preNumber = input.value;
+                    addWordToWindow(input.value + returnOperator());
+                }
+            }
+            else {
+                resultWindow.textContent = resultWindow.textContent.slice(0, -1);
+                curOp = returnOperator();
+                addWordToWindow(returnOperator());
+            }
+        }
+
+        input.value = '';
+        input.focus;
+}
 
 // 칸을 클릭하면 인풋창에 표시하는 함수
 table.addEventListener('click', function (event) {
