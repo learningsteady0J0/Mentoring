@@ -1,4 +1,9 @@
-﻿var table = document.getElementById("table");
+﻿/*각 함수를 최대한 잘게 잘게 나눠보자. 그리고 단순화 시키자 숫자입력이란 것도 따로 빼서 지정하기. 
+ * 함수명은 맥락에 맞게 이름 짖기 (단순 기능을 이용한 네이밍은 x)  
+ * 키입력과 표를 클릭시의 동작을 합쳐서 표현할 수 있을 것 같음.
+ */
+
+var table = document.getElementById("table");
 var resultWindow = document.getElementById("resultWindow"); //결과창
 var form = document.getElementById("form");
 var input = document.getElementById("input");
